@@ -1,1 +1,1 @@
-arilines
+SELECT * FROM AIRLINE;
