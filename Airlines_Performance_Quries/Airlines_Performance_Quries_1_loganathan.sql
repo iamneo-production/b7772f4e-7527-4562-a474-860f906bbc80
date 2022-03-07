@@ -1,5 +1,4 @@
 -->Performance Quries Set 1 
-
 -->1.Count the female passengers book an air ticket
 
 CREATE OR REPLACE FUNCTION COUNT_FEMALE_PASSENGER
