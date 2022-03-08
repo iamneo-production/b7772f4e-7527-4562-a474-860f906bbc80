@@ -1,10 +1,10 @@
 -->Performance Quries Set 1 
 
 -->1.Count the female passengers book an air ticket
-CREATE OR REPLACE FUNCTION COUNT_FEMALE_PASSENGER
+CREATE OR REPLACE FUNCTION TOTAL_FEMALE_PASSENGER
 RETURN VARCHAR
 IS
-Female_Count NUMBER := 0;
+    Female_Count NUMBER := 0;
 BEGIN
     SELECT 
         COUNT(1) 
@@ -28,20 +28,40 @@ GROUP BY
     CLASS;
 
 -->3.The passenger count who is all booking business Class
-SELECT 
-    COUNT(1) "Booking Count of Business Class" 
-FROM 
-    AIRLINE 
-WHERE 
-    CLASS = 'Business';
+CREATE OR REPLACE FUNCTION TOTAL_BUSINESS_CLASS_PASS
+RETURN VARCHAR
+IS
+    Business_Total NUMBER;
+BEGIN
+    SELECT 
+        COUNT(1)
+    INTO
+        Business_Total
+    FROM 
+        AIRLINE 
+    WHERE 
+        CLASS = 'Business';
+    RETURN 'Total Bussiness class Passengers '||Business_Total;
+END;
+/
 
 -->4. Count the kid passenger list? (kid = age is less than 13)
-SELECT
-    COUNT(AGE) "Kid Passenger"
-FROM
-    AIRLINE
-WHERE
-    AGE < 13;
+CREATE OR REPLACE FUNCTION TOTAL_KID_PASSENGER
+RETURN VARCHAR
+IS
+    Kid_Total NUMBER;
+BEGIN
+    SELECT
+        COUNT(AGE)
+    INTO
+        Kid_Total
+    FROM
+        AIRLINE
+    WHERE
+        AGE < 13;
+    RETURN 'Total Kid Passengers '||Kid_Total;
+END;
+/
 
 -->5. Count the passenger list of each Travel type
 SELECT
@@ -53,15 +73,24 @@ GROUP BY
     TYPE_OF_TRAVEL;
 
 -->6. Count of passengers booking eco class
-SELECT
-    CLASS,
-    COUNT(1) "Passenger Count"
-FROM
-    AIRLINE
-WHERE
-    CLASS = 'Eco'
-GROUP BY
-    CLASS;
+CREATE OR REPLACE FUNCTION TOTAL_ECO_CLASS_PASS
+RETURN VARCHAR
+IS
+    Eco_Total NUMBER;
+BEGIN
+    SELECT
+        COUNT(1)
+    INTO
+        Eco_Total
+    FROM
+        AIRLINE
+    WHERE
+        CLASS = 'Eco'
+    GROUP BY
+        CLASS;
+    RETURN 'Total Eco Class Passengers '||Eco_Total;
+END;
+/
 
 -->7. Count the passenger list above age 16 and book a business class
 SELECT
@@ -104,9 +133,26 @@ GROUP BY
 
 --Reference Quries
 SELECT 
-    COUNT_FEMALE_PASSENGER() 
+    TOTAL_FEMALE_PASSENGER() 
 FROM 
     DUAL;
+
+SELECT 
+    TOTAL_BUSINESS_CLASS_PASS() 
+FROM 
+    DUAL;
+
+SELECT 
+    TOTAL_KID_PASSENGER() 
+FROM 
+    DUAL;
+
+SELECT
+    TOTAL_ECO_CLASS_PASS()
+FROM
+    DUAL;
+
+DROP FUNCTION COUNT_FEMALE_PASSENGER;
 
 SELECT 
     * 
