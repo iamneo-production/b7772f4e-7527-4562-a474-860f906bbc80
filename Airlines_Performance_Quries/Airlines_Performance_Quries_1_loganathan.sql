@@ -19,14 +19,29 @@ END;
 /
 
 -->2. Count the passenger list class-wise
-SELECT 
-    CLASS "Travel Class", 
-    COUNT(1) "Passenger Count" 
-FROM 
-    AIRLINE 
-GROUP BY 
-    CLASS;
-
+CREATE OR REPLACE PROCEDURE TOTAL_PASSENGER_CLASS_WISE
+IS
+    TYPE class_name IS TABLE OF VARCHAR(32);
+    TYPE cnt IS TABLE OF NUMBER;
+    clsname class_name;
+    Total_Count cnt;
+BEGIN
+    SELECT 
+        CLASS, 
+        COUNT(1)
+    BULK COLLECT INTO
+        clsname,
+        Total_Count 
+    FROM 
+        AIRLINE 
+    GROUP BY 
+        CLASS;
+    DBMS_OUTPUT.PUT_LINE('Class Name'||'               '||'Total Passengers');
+    FOR I IN  1 .. clsname.COUNT LOOP
+        DBMS_OUTPUT.PUT_LINE(clsname(I)||'          '||'            '||Total_Count(I));
+    END LOOP;
+END;
+/
 -->3.The passenger count who is all booking business Class
 CREATE OR REPLACE FUNCTION TOTAL_BUSINESS_CLASS_PASS
 RETURN VARCHAR
@@ -64,14 +79,29 @@ END;
 /
 
 -->5. Count the passenger list of each Travel type
-SELECT
-    TYPE_OF_TRAVEL,
-    COUNT(1)
-FROM
-    AIRLINE
-GROUP BY
-    TYPE_OF_TRAVEL;
-
+CREATE OR REPLACE PROCEDURE TOTAL_PASS_TRAVEL_TYPE
+IS
+    TYPE type_name IS TABLE OF VARCHAR(32);
+    TYPE cnt IS TABLE OF NUMBER;
+    typename type_name;
+    Total_Count cnt;
+BEGIN    
+    SELECT
+        TYPE_OF_TRAVEL,
+        COUNT(1)
+    BULK COLLECT INTO
+        typename,
+        Total_Count
+    FROM
+        AIRLINE
+    GROUP BY
+        TYPE_OF_TRAVEL;
+    DBMS_OUTPUT.PUT_LINE('Travel Type'||'               '||'Total Passengers');
+    FOR I IN  1 .. typename.COUNT LOOP
+        DBMS_OUTPUT.PUT_LINE(typename(I)||'          '||'            '||Total_Count(I));
+    END LOOP;
+END;
+/
 -->6. Count of passengers booking eco class
 CREATE OR REPLACE FUNCTION TOTAL_ECO_CLASS_PASS
 RETURN VARCHAR
@@ -111,35 +141,81 @@ END;
 /
 
 -->8. Count the passenger list of each satisfaction
-SELECT
-    SATISFACTION,
-    COUNT(1) "Passenger Count"
-FROM
-    AIRLINE
-GROUP BY
-    SATISFACTION;    
-
+CREATE OR REPLACE PROCEDURE TOTAL_PASS_SATISFACTION
+IS
+    TYPE type_name IS TABLE OF VARCHAR(32);
+    TYPE cnt IS TABLE OF NUMBER;
+    typename type_name;
+    Total_Count cnt;
+BEGIN    
+    SELECT
+        SATISFACTION,
+        COUNT(1)
+    BULK COLLECT INTO
+        typename,
+        Total_Count
+    FROM
+        AIRLINE
+    GROUP BY
+        SATISFACTION;    
+    DBMS_OUTPUT.PUT_LINE('Satisfaction'||'               '||'Total Passengers');
+    FOR I IN  1 .. typename.COUNT LOOP
+        DBMS_OUTPUT.PUT_LINE(typename(I)||'          '||'            '||Total_Count(I));
+    END LOOP;
+END;
+/
 -->9. Display the customer type where gender is male and display them according to the class
-SELECT
-    CUSTOMER_TYPE,
-    CLASS
-FROM
-    AIRLINE
-WHERE 
-    GENDER = 'Male'
-ORDER BY
-    CLASS DESC;
-
+CREATE OR REPLACE PROCEDURE TOTAL_PASS_CUSTYPE_MALE
+IS
+    TYPE type_name IS TABLE OF VARCHAR(32);
+    typename type_name;
+    class_name type_name;
+BEGIN    
+    SELECT
+        CUSTOMER_TYPE,
+        CLASS
+    BULK COLLECT INTO
+        typename,
+        class_name
+    FROM
+        AIRLINE
+    WHERE 
+        GENDER = 'Male'
+    GROUP BY
+        CLASS,CUSTOMER_TYPE
+    ORDER BY
+        CLASS DESC;
+    DBMS_OUTPUT.PUT_LINE('Customer Type'||'               '||'Total Passengers');
+    FOR I IN  1 .. typename.COUNT LOOP
+        DBMS_OUTPUT.PUT_LINE(typename(I)||'          '||'            '||class_name(I));
+    END LOOP;
+END;
+/
 
 -->10. Count the passenger list of each satisfaction? 
-
-SELECT
-    SATISFACTION,
-    COUNT(1) "Passenger Count"
-FROM
-    AIRLINE
-GROUP BY
-    SATISFACTION;    
+CREATE OR REPLACE PROCEDURE TOTAL_PASS_SATISFACTION
+IS
+    TYPE type_name IS TABLE OF VARCHAR(32);
+    TYPE cnt IS TABLE OF NUMBER;
+    typename type_name;
+    Total_Count cnt;
+BEGIN    
+    SELECT
+        SATISFACTION,
+        COUNT(1)
+    BULK COLLECT INTO
+        typename,
+        Total_Count
+    FROM
+        AIRLINE
+    GROUP BY
+        SATISFACTION;    
+    DBMS_OUTPUT.PUT_LINE('Satisfaction'||'               '||'Total Passengers');
+    FOR I IN  1 .. typename.COUNT LOOP
+        DBMS_OUTPUT.PUT_LINE(typename(I)||'          '||'            '||Total_Count(I));
+    END LOOP;
+END;
+/
 
 --Reference Quries
 SELECT 
@@ -174,13 +250,17 @@ SELECT
 FROM 
     AIRLINE;
 
-
 SELECT
     *
 FROM
     AIRLINE
 WHERE
     GENDER = 'Male';
+
+EXEC TOTAL_PASSENGER_CLASS_WISE();
+EXEC TOTAL_PASS_TRAVEL_TYPE();
+EXEC TOTAL_PASS_SATISFACTION();
+EXEC TOTAL_PASS_CUSTYPE_MALE();
 
 DESC AIRLINE;
 
