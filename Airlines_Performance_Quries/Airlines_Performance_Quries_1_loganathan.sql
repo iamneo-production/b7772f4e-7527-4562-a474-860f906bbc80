@@ -66,7 +66,7 @@ END;
 -->5. Count the passenger list of each Travel type
 SELECT
     TYPE_OF_TRAVEL,
-    COUNT(1) "Passenger Count"
+    COUNT(1)
 FROM
     AIRLINE
 GROUP BY
@@ -93,12 +93,22 @@ END;
 /
 
 -->7. Count the passenger list above age 16 and book a business class
-SELECT
-    COUNT(1) "Passenger Count Age > 16 and Business class"
-FROM
-    AIRLINE
-WHERE
-    AGE > 16 AND CLASS = 'Business';
+CREATE OR REPLACE FUNCTION TOTAL_PASSENGER_AGE16
+RETURN VARCHAR
+IS
+    Age_Total NUMBER;
+BEGIN
+    SELECT
+        COUNT(1) 
+    INTO
+        Age_Total
+    FROM
+        AIRLINE
+    WHERE
+        AGE > 16 AND CLASS = 'Business';
+    RETURN 'Total Passengers Under age > 16 = '||Age_Total;
+END;
+/
 
 -->8. Count the passenger list of each satisfaction
 SELECT
@@ -149,6 +159,11 @@ FROM
 
 SELECT
     TOTAL_ECO_CLASS_PASS()
+FROM
+    DUAL;
+
+SELECT
+    TOTAL_PASSENGER_AGE16()
 FROM
     DUAL;
 
