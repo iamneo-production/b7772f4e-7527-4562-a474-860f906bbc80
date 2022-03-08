@@ -1,5 +1,4 @@
 -->Performance Quries Set 1 
-
 -->1.Count the female passengers book an air ticket
 CREATE OR REPLACE FUNCTION TOTAL_FEMALE_PASSENGER
 RETURN VARCHAR
@@ -42,6 +41,7 @@ BEGIN
     END LOOP;
 END;
 /
+
 -->3.The passenger count who is all booking business Class
 CREATE OR REPLACE FUNCTION TOTAL_BUSINESS_CLASS_PASS
 RETURN VARCHAR
@@ -102,6 +102,7 @@ BEGIN
     END LOOP;
 END;
 /
+
 -->6. Count of passengers booking eco class
 CREATE OR REPLACE FUNCTION TOTAL_ECO_CLASS_PASS
 RETURN VARCHAR
@@ -164,6 +165,7 @@ BEGIN
     END LOOP;
 END;
 /
+
 -->9. Display the customer type where gender is male and display them according to the class
 CREATE OR REPLACE PROCEDURE TOTAL_PASS_CUSTYPE_MALE
 IS
