@@ -1,56 +1,123 @@
 --> Performance Quries Set 2
 
 -->1. Count the Female Passengers who are all booking 'Business' Class
-SELECT
-    COUNT(1) "Female and Business Class Passenger Count"
-FROM
-    AIRLINE
-WHERE
-    GENDER = 'Female' AND CLASS = 'Business';
+CREATE OR REPLACE FUNCTION TOTAL_FEMALE_BUSINESS
+RETURN VARCHAR
+IS
+    cnt NUMBER;
+BEGIN
+    SELECT
+        COUNT(1)
+    INTO
+        cnt
+    FROM
+        AIRLINE
+    WHERE
+        GENDER = 'Female' AND CLASS = 'Business';
+    RETURN 'Total Female passengers who booked Business class '||cnt;
+END;
+/
 
 -->2. Count The Male Passengers list of each booking class Wise
-SELECT
-    CLASS,
-    COUNT(1) "Total Passenger"
-FROM
-    AIRLINE
-WHERE
-    GENDER ='Male'
-GROUP BY
-    CLASS;
+CREATE OR REPLACE PROCEDURE TOTAL_MALE_PASSENGER_CLASS_WISE
+IS
+    TYPE class_name IS TABLE OF VARCHAR(32);
+    TYPE cnt IS TABLE OF NUMBER;
+    clsname class_name;
+    Total_Count cnt;
+BEGIN
+    SELECT
+        CLASS,
+        COUNT(1)
+    BULK COLLECT INTO
+    clsname,
+    Total_Count
+    FROM
+        AIRLINE
+    WHERE
+        GENDER ='Male'
+    GROUP BY
+        CLASS;
+    DBMS_OUTPUT.PUT_LINE('Class Name'||'               '||'Total Passengers');
+    FOR I IN  1 .. clsname.COUNT LOOP
+        DBMS_OUTPUT.PUT_LINE(clsname(I)||'          '||'            '||Total_Count(I));
+    END LOOP;
+END;
+/
 
 -->3. Find The Passengers who are all booking a ticket age above 15 in Business class
-SELECT 
-    ID
-FROM
-    AIRLINE
-WHERE
-    CLASS = 'Business' AND AGE > 15;
-
+CREATE OR REPLACE PROCEDURE PASSENGER_BUSINESS_AGE15
+IS
+    TYPE pass_id IS TABLE OF NUMBER;
+    passid pass_id;
+BEGIN
+    SELECT 
+        ID
+    BULK COLLECT INTO
+        passid
+    FROM
+        AIRLINE
+    WHERE
+        CLASS = 'Business' AND AGE > 15;
+    FOR I IN  1 .. passid.COUNT LOOP
+        DBMS_OUTPUT.PUT_LINE(passid(I));
+    END LOOP;
+END;
+/
 -->4. Count the Passengers in each Customer Type
-SELECT
-    CUSTOMER_TYPE,
-    COUNT(1) "Total Passengers"
-FROM
-    AIRLINE
-GROUP BY
-    CUSTOMER_TYPE;
+
+CREATE OR REPLACE PROCEDURE TOTAL_PASS_CUSTOMER_TYPE
+IS
+    TYPE cus_type IS TABLE OF VARCHAR(32);
+    TYPE cnt IS TABLE OF NUMBER;
+    custype cus_type;
+    Total_Count cnt;
+BEGIN
+    SELECT
+        CUSTOMER_TYPE,
+        COUNT(1)
+    BULK COLLECT INTO
+        custype,
+        Total_Count
+    FROM
+        AIRLINE
+    GROUP BY
+        CUSTOMER_TYPE;
+    DBMS_OUTPUT.PUT_LINE('Customer Type'||'               '||'Total Passengers');
+    FOR I IN  1 .. custype.COUNT LOOP
+        DBMS_OUTPUT.PUT_LINE(custype(I)||'          '||'            '||Total_Count(I));
+    END LOOP;
+END;
+/
 
 -->5. Display the passenger details who are all booking Eco class
+CREATE OR REPLACE PROCEDURE PASSENGERS_ECO_CLASS
+IS
+    TYPE pass_id IS TABLE OF NUMBER;
+    passid pass_id;
+BEGIN
+    SELECT
+        ID
+    BULK COLLECT INTO
+        passid
+    FROM
+        AIRLINE
+    WHERE
+        CLASS ='Eco';
+    FOR I IN  1 .. passid.COUNT LOOP
+        DBMS_OUTPUT.PUT_LINE(passid(I));
+    END LOOP;
+END;
+/
+
+--Reference Quries
+
 SELECT
-    ID
+    TOTAL_FEMALE_BUSINESS()
 FROM
-    AIRLINE
-WHERE
-    CLASS ='Eco';
+    DUAL;
 
-
-SELECT ST_NAME,SUM(COUNT(ST_NAME)),ROUND(SUM(TOTVOTPOLL)/SUM(ELECTORS)*100,2) FROM ELECTION WHERE PARTYABBRE = 'BJP'
-GROUP BY ST_NAME HAVING ROUND(SUM(TOTVOTPOLL)/SUM(ELECTORS)*100,2) > 20;
-
-SELECT * FROM ELECTION;
-
-SELECT YEAR,TOTVOTPOLL,ELECTORS,PARTYABBRE FROM ELECTION WHERE PARTYABBRE ='BJP' 
-GROUP BY YEAR,TOTVOTPOLL,ELECTORS,PARTYABBRE;
-
-SELECT 
+EXEC TOTAL_MALE_PASSENGER_CLASS_WISE();
+EXEC PASSENGER_BUSINESS_AGE15();
+EXEC TOTAL_PASS_CUSTOMER_TYPE();
+EXEC PASSENGERS_ECO_CLASS();
