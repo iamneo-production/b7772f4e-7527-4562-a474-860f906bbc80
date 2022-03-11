@@ -1,3 +1,4 @@
+--SET 1 PERFORMANCE QUERIES
 --1. Count how many Female passengers book an air ticket?
 CREATE OR REPLACE PROCEDURE Passengers_Female
 AS

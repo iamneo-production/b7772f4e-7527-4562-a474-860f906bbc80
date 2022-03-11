@@ -1,3 +1,4 @@
+--SET 2 PERFORMANCE QUERIES 
 --1. Count the Female Passengers who are all booking 'Business' Class?
 CREATE OR REPLACE PROCEDURE F_BUSINESS_CLASS
 IS
