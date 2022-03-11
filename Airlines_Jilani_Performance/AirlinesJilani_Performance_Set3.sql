@@ -1,3 +1,6 @@
+--SET 3 PERFORMANCE QUERIES 
+
+
 --1. Find how many Percentages of male Passengers book an air ticket?
 
 CREATE OR REPLACE PROCEDURE MALE_PASS_PERCENTAGE
