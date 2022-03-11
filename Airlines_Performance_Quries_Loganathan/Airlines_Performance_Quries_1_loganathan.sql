@@ -1,4 +1,3 @@
-
 --------------------------------Performance Quries Set 1 ------------------------------------
 -->INDEX
 CREATE INDEX AIRLINES_SATIS_I 
@@ -12,7 +11,7 @@ SELECT * FROM AIRLINE;
 
 -->Qurie
 SELECT 
-    COUNT(1)
+    COUNT(1) "Total Female Passengers"
 FROM
     AIRLINE
 WHERE
@@ -40,8 +39,8 @@ END;
 
 -->Qurie
 SELECT
-    CLASS,
-    COUNT(1)
+    CLASS "Class Name",
+    COUNT(1) "Total Passengers"
 FROM
     AIRLINE
 GROUP BY 
@@ -76,7 +75,7 @@ END;
 
 -->Qurie
 SELECT
-    /*+NO_INDEX(AIRLINE)*/COUNT(1)
+    COUNT(1) "Total Business class Passengers"
 FROM
     AIRLINE
 WHERE 
@@ -85,12 +84,12 @@ WHERE
 -->EXPLAIN PLAN
 
 EXPLAIN PLAN FOR
-SELECT
-    /*+NO_INDEX(AIRLINE)*/COUNT(1)
-FROM
-    AIRLINE
-WHERE 
-    CLASS = 'Business';
+    SELECT
+        COUNT(1)
+    FROM
+        AIRLINE
+    WHERE 
+        CLASS = 'Business';
 
 SELECT
     PLAN_TABLE_OUTPUT
@@ -134,7 +133,7 @@ END;
 
 -->Qurie
 SELECT
-    COUNT(AGE)
+    COUNT(AGE) "Total Kid Passengers"
 FROM
     AIRLINE
 WHERE
@@ -162,8 +161,8 @@ END;
 
 -->Qurie
 SELECT
-    TYPE_OF_TRAVEL,
-    COUNT(1)
+    TYPE_OF_TRAVEL "Travel Type",
+    COUNT(1) "Total Passengers"
 FROM
     AIRLINE
 GROUP BY
@@ -198,7 +197,7 @@ END;
 
 -->Qurie
 SELECT
-    COUNT(1)
+    COUNT(1) "Total Eco Class Passengers"
 FROM
     AIRLINE
 WHERE
@@ -230,7 +229,7 @@ END;
 
 -->Qurie
 SELECT
-    COUNT(1) 
+    COUNT(1) "Total Passengers Age above 16 and Business Class"
 FROM
     AIRLINE
 WHERE
@@ -258,8 +257,8 @@ END;
 
 -->Qurie
 SELECT
-    SATISFACTION,
-    COUNT(1)
+    SATISFACTION "Satisfaction Comment",
+    COUNT(1) "Total Passenger"
 FROM
     AIRLINE
 GROUP BY
@@ -294,8 +293,8 @@ END;
 
 -->Qurie
 SELECT
-    CUSTOMER_TYPE,
-    CLASS
+    CUSTOMER_TYPE "Customer Type",
+    CLASS "Class"
 FROM
     AIRLINE
 WHERE 
@@ -337,8 +336,8 @@ END;
 
 -->Qurie
 SELECT
-    SATISFACTION,
-    COUNT(1)
+    SATISFACTION "Satisfaction Comment",
+    COUNT(1) "Total Passengers"
 FROM
     AIRLINE
 GROUP BY

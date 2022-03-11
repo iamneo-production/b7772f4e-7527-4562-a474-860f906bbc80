@@ -189,3 +189,21 @@ BEGIN
 END;
 /
 --Without Index Time taken by executing Query = Time = +000000000 00:00:00.064029000
+--With Index Time taken by executing Query = Time = +000000000 00:00:00.061098000
+
+DECLARE
+    starting_time  TIMESTAMP WITH TIME ZONE;
+    ending_time    TIMESTAMP WITH TIME ZONE;
+BEGIN
+    SELECT SYSTIMESTAMP INTO starting_time FROM DUAL;
+    TOTAL_PASS_CUSTOMER_TYPE();
+    SELECT SYSTIMESTAMP INTO ending_time FROM DUAL;
+    DBMS_OUTPUT.PUT_LINE('Time = ' || TO_CHAR(ending_time - starting_time));
+END;
+/
+/*
+Customer Type                       Total Passengers
+Loyal Customer                          84923
+disloyal Customer                       18981
+Time = +000000000 00:00:00.020853000
+*/
